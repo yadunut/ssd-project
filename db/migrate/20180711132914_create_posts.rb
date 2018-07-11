@@ -3,6 +3,7 @@ class CreatePosts < ActiveRecord::Migration[5.2]
     create_table :posts do |t|
       t.string :body
       t.belongs_to :user, index: true
+      t.has_many :comments
       t.string :image
       t.integer :visibility
 
