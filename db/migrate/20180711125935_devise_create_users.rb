@@ -21,6 +21,10 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.inet     :current_sign_in_ip
       t.inet     :last_sign_in_ip
 
+      t.string :first_name, null: false, default: ""
+      t.string :last_name, null: false, default: ""
+      t.datetime :date_of_birth
+      t.string :bio
       ## Confirmable
       # t.string   :confirmation_token
       # t.datetime :confirmed_at
