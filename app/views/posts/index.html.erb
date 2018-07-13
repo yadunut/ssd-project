@@ -1,0 +1,17 @@
+<h1>Posts</h1>
+<h2><%= "#{current_user.first_name} #{current_user.last_name}" %></h2>
+<li>
+<%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
+</li>
+
+<%= form_for(@post) do |f| %>
+<%= f.text_area :body %>
+<%= f.submit "Post" %>
+<% end %>
+
+<% @posts.each do |p| %>
+<div>
+<%= p.user_id %>
+<%= p.body %>
+<% end %>
+</div>
