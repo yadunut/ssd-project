@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all.order updated_at: :asc
+    @posts = Post.all.order updated_at: :desc
     @post = Post.new
   end
 
@@ -21,7 +21,9 @@ class PostsController < ApplicationController
     p = Post.new
     p.body = body
     p.user_id = current_user.id
+    p.name = "#{current_user.first_name} #{current_user.last_name}"
     if p.invalid?
+      # Show error to user
       redirect_to root_path
       return
     end
