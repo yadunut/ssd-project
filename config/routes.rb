@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   post 'comments', to: 'posts#create_comment'
 
-  get 'settings', to: 'users/registrations#edit'
   get 'profile', to: 'users#profile'
 
   devise_for :users, controllers: {
