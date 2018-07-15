@@ -6,10 +6,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :posts, dependent: :destroy
+  has_many :posts, dependent: :delete_all
 
   validates :first_name, presence: true
   validate :validate_age
+  validates :username, presence: true
 
   private
 
