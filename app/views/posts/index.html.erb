@@ -4,7 +4,7 @@
 <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
 </li>
 
-<%= form_for(@post) do |f| %>
+<%= form_with url: posts_path do |f| %>
 <%= f.text_area :body %>
 <%= f.submit "Post" %>
 <% end %>
@@ -12,8 +12,25 @@
 <% @posts.each do |p| %>
 <div class="card mx-auto" style="width: 50%;">
     <div class="card-body">
-        <h5 class="card-title"><%= p.name %></h5>
+        <h5 class="card-title"><%= "#{current_user.first_name} #{current_user.last_name}" %></h5>
         <p class="card-text"><%= p.body %></p>
+        <%#= For comment %>
+        <% @comments.each do |c| %>
+            <% if c.post_id == p.id %>
+                <div class="card" style="width: 50%;">
+                <div class="card-body">
+                    <p class="card-text"><%= c.body %></p>
+                </div>
+                </div>
+            <% end %>
+                
+        <% end %>
+        <%# To post comment %>
+        <%= form_with url: comments_path do |f| %>
+            <%=  f.hidden_field :id, :value => p.id %>
+            <%= f.text_area :body %>
+            <%= f.submit "Comment" %>
+        <% end %>
     </div>
 </div>
 <% end %>
