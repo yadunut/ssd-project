@@ -1,2 +1,12 @@
-<h1>Users#profile</h1>
-<p>Find me in app/views/users/profile.html.erb</p>
+<h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
+<h2><%= @user.date_of_birth %></h2>
+<p> <%= @user.bio %> </p>
+
+<% @posts.each do |post|%>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><%= "#{@user.first_name} #{@user.last_name}" %></h5>
+    <p class="card-text"> <%= post.body %></p>
+  </div>
+</div>
+<% end %>

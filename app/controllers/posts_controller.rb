@@ -21,8 +21,16 @@ class PostsController < ApplicationController
     p = Post.new
     p.body = body
     p.user_id = current_user.id
+    visibility = params[:visibility]
+    unless visibility.integer?
+      flash[:alert] = 'Visibility is invalid'
+      redirect_to root_path
+      return
+    end
+
+    p.visibility = visibility.to_i
     if p.invalid?
-      # Show error to user
+      flash[:alert] = 'Post is invalid'
       redirect_to root_path
       return
     end

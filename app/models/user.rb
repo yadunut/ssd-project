@@ -15,7 +15,7 @@ class User < ApplicationRecord
   private
 
   def validate_age
-    return false if date_of_birth.present? && date_of_birth < 18.years.ago
+    return false if date_of_birth.present? && date_of_birth < 13.years.ago
     errors.add(:date_of_birth, 'You should be over 18 years old.')
   end
 end

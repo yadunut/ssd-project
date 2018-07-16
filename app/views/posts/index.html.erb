@@ -5,20 +5,23 @@
 </li>
 
 <%= form_with url: posts_path do |f| %>
-<%= f.text_area :body %>
+<%= f.text_area :body %><br/>
+<%= f.label :visibility%>
+<%= f.select :visibility, options_for_select([['Only me', 0], ['Friends', 1],['Public', 2]], 1) %>
 <%= f.submit "Post" %>
 <% end %>
 
 <% @posts.each do |p| %>
 <div class="card mx-auto" style="width: 50%;">
     <div class="card-body">
-        <h5 class="card-title"><%= "#{current_user.first_name} #{current_user.last_name}" %></h5>
+        <h5 class="card-title"><%= "#{@users.find(p.user_id).first_name} #{@users.find(p.user_id).last_name}" %></h5>
         <p class="card-text"><%= p.body %></p>
         <%#= For comment %>
         <% @comments.each do |c| %>
             <% if c.post_id == p.id %>
                 <div class="card" style="width: 50%;">
                 <div class="card-body">
+                    <h5 class="card-title"><%= "#{@users.find(c.user_id).first_name} #{@users.find(c.user_id).last_name}" %></h5>
                     <p class="card-text"><%= c.body %></p>
                 </div>
                 </div>

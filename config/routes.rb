@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'users/profile'
   get 'users/settings'
   root 'posts#index'
 
@@ -10,7 +9,8 @@ Rails.application.routes.draw do
 
   post 'comments', to: 'posts#create_comment'
 
-  get 'profile', to: 'users#profile'
+  get ':id', to: 'users#profile_search'
+  get ':id/profile', to: 'users#profile'
 
   devise_for :users, controllers: {
     registrations: 'users/registrations'
