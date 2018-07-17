@@ -29,12 +29,12 @@ class UsersController < ApplicationController
     end
     @posts =  if user_signed_in? 
                 if current_user.id == @user.id
-                  Post.all.where(user_id: @user.id)
+                  Post.all.where(user_id: @user.id).order(updated_at: :desc)
                 else 
-                  Post.all.where(user_id: @user.id, visibility: 1)
+                  Post.all.where(user_id: @user.id, visibility: 1..2).order(updated_at: :desc)
                 end
               else 
-                Post.all.where(user_id: @user.id, visibility: 2)
+                Post.all.where(user_id: @user.id, visibility: 2).order(updated_at: :desc)
               end
   end
 
