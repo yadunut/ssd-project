@@ -8,9 +8,18 @@ class User < ApplicationRecord
 
   has_many :posts, dependent: :delete_all
 
+  has_many :blocks
+  has_many :users_that_blocked_me, through: :blocks, source: :user
+
+  has_many :users_i_blocked, through: :blocks, source: 'blocked'
+
   validates :first_name, presence: true
   validate :validate_age
   validates :username, presence: true
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 
   private
 
@@ -18,4 +27,5 @@ class User < ApplicationRecord
     return false if date_of_birth.present? && date_of_birth < 13.years.ago
     errors.add(:date_of_birth, 'You should be over 13 years old.')
   end
+
 end

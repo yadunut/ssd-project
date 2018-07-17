@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_15_104408) do
+ActiveRecord::Schema.define(version: 2018_07_17_083317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blocks", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "blocked_id"
+    t.index ["blocked_id"], name: "index_blocks_on_blocked_id"
+    t.index ["user_id"], name: "index_blocks_on_user_id"
+  end
 
   create_table "comments", force: :cascade do |t|
     t.string "body"
