@@ -14,14 +14,14 @@
 <% @posts.each do |p| %>
 <div class="card mx-auto" style="width: 50%;">
     <div class="card-body">
-        <h5 class="card-title"><%= "#{@users.find(p.user_id).first_name} #{@users.find(p.user_id).last_name}" %></h5>
+        <h5 class="card-title"><%= "#{p.user.first_name} #{p.user.last_name}" %></h5>
         <p class="card-text"><%= p.body %></p>
         <%#= For comment %>
         <% @comments.each do |c| %>
             <% if c.post_id == p.id %>
                 <div class="card" style="width: 50%;">
                 <div class="card-body">
-                    <h5 class="card-title"><%= "#{@users.find(c.user_id).first_name} #{@users.find(c.user_id).last_name}" %></h5>
+                    <h5 class="card-title"><%= "#{c.user.first_name} #{c.user.last_name}" %></h5>
                     <p class="card-text"><%= c.body %></p>
                 </div>
                 </div>
