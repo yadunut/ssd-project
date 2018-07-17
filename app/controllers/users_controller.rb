@@ -37,8 +37,6 @@ class UsersController < ApplicationController
                 Post.all.where(user_id: @user.id, visibility: 2).order(updated_at: :desc)
               end
   end
-
-  def settings; end
 end
 
 class String
