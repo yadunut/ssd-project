@@ -47,9 +47,3 @@ class UsersController < ApplicationController
     redirect_to edit_user_registration_path
   end
 end
-
-class String
-  def integer?
-    to_i.to_s == self
-  end
-end
