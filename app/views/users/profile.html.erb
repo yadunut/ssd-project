@@ -1,5 +1,6 @@
-<h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
-<h2><%= @user.date_of_birth %></h2>
+<h1>Name: <%= @user.name.titlecase %></h1>
+<h2>DOB: <%= @user.date_of_birth %></h2>
+<h3> ID: <%= @user.id%></h3>
 <p> <%= @user.bio %> </p>
 
 <% @posts.each do |post|%>

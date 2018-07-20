@@ -10,8 +10,8 @@ Rails.application.routes.draw do
 
   get 'settings', to: 'users#settings'
 
-  get ':id', to: 'users#profile_search'
-  get ':id/profile', to: 'users#profile'
+  get 'search/:id', to: 'users#profile_search'
+  get '/:id/profile', to: 'users#profile' # Check profile_search.html.erb
 
 
   devise_for :users, controllers: {
