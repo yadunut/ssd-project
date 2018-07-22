@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'users/search/:id', to: 'users/users#search'
-  get 'users/profile/:username', to: 'users/users#profile'
+  get 'users/search/:id', to: 'users/users#search', as: :users_search
+  get 'users/profile/:username', to: 'users/users#profile', as: :users_profile
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
