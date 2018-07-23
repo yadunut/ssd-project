@@ -21,11 +21,6 @@ class User < ApplicationRecord
 
 
   # Validators
-  def check_special_characters
-    return errors.add(:username, 'No spaces allowed in username') \
-      if username.match?(/\s/)
-  end
-
   def age_allowed
     return errors.add(:date_of_birth, 'You should be above 13 years old') \
       unless date_of_birth.present? && date_of_birth < 13.years.ago
