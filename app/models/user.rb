@@ -22,7 +22,7 @@ class User < ApplicationRecord
 
   # Validators
   def check_empty_spaces
-    return errors.add(:username, 'No spaces allolsaed in username') \
+    return errors.add(:username, 'No spaces allowed in username') \
       if username.match?(/\s/)
   end
 

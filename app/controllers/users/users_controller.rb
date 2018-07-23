@@ -24,8 +24,12 @@ class Users::UsersController < ApplicationController
   def profile
     username = params[:username]
     if username.blank?
-      flash[:alert] = 'Username cannot be empty'
-      redirect_to root_path
+      if user_signed_in?
+        redirect_to users_profile_path current_user.username
+      else
+        flash[:alert] = 'Sign in to view your page'
+        redirect_to root_path
+      end
       return
     end
 
@@ -37,31 +41,35 @@ class Users::UsersController < ApplicationController
     end
   end
 
+  def slashprofile
+    if user_signed_in?
+      redirect_to users_profile_path current_user.username
+    else
+      flash[:alert] = 'Sign in to view your page'
+      redirect_to root_path
+    end
+  end
+
   # POST /users/profile
   # This updates the users bio
   def update
     bio = user_params[:bio]
-    username = user_params[:username]
 
-    if username.blank?
-      flash[:alert] = 'Username cannot be blank'
-      redirect_to root_path
-      return
-    end
 
     if bio.blank?
       flash[:alert] = 'Bio cannot be blank'
-      redirect_to users_profile_path username
+      redirect_to users_profile_path current_user.username
       return
     end
 
     current_user.bio = bio
     current_user.save
     flash[:notice] = 'Bio has been updated'
-    redirect_to users_profile_path username
+    redirect_to users_profile_path current_user.username
   end
 
   private
+
   # TODO: Permitted params
   def user_params
     params[:user]
