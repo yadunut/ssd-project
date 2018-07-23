@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validate :username, :check_empty_spaces
   validate :date_of_birth, :age_allowed
 
+  validates :username, uniqueness: true
+
 
   # Validators
   def check_empty_spaces
