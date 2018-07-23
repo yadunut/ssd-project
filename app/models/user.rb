@@ -4,6 +4,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  
+  # Blocked users
+  has_many :blocks
+  has_many :users_that_blocked_me, through: :blocks, source: :user
+  has_many :users_i_blocked, through: :blocks, source: 'blocked'
+
   validates :name, presence: true
   validates :username, presence: true
   validates :date_of_birth, presence: true
