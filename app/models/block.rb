@@ -11,6 +11,7 @@ class Block < ApplicationRecord
 
   # Validates user != blocked, i.e user cannot block themselves
   def user_is_not_blocked
-    return errors.add(:user, 'You cannot block yourself') if user.id == blocked.id
+    return errors.add(:user, 'You cannot block yourself')\
+    if user.id == blocked.id
   end
 end

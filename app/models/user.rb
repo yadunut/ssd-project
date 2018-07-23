@@ -14,14 +14,14 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :date_of_birth, presence: true
 
-  validate :username, :check_empty_spaces
+  validates_format_of :username, :with => /\A[a-z]+\z/i, message: 'can only contain letters'
   validate :date_of_birth, :age_allowed
 
   validates :username, uniqueness: true
 
 
   # Validators
-  def check_empty_spaces
+  def check_special_characters
     return errors.add(:username, 'No spaces allowed in username') \
       if username.match?(/\s/)
   end
@@ -31,7 +31,7 @@ class User < ApplicationRecord
       unless date_of_birth.present? && date_of_birth < 13.years.ago
   end
 
-  # Use this instead of User.all so that users that blocked you dont show up
+  # Use this instead of User.all so that users that blocked you don't show up
   def self.get_users(current_user)
     User.all
   end
