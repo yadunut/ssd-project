@@ -14,6 +14,10 @@ class Users::BlocksController < ApplicationController
   def new
     @users_block = Block.new
     @users = get_blockable_users
+    if @users.size == 0
+      flash[:notice] = 'You have blocked all users'
+      redirect_to block_path
+    end
   end
 
   # POST /users/blocks
@@ -26,7 +30,7 @@ class Users::BlocksController < ApplicationController
 
     respond_to do |format|
       if @users_block.save
-        format.html { redirect_to @users_block, notice: 'Block was successfully created.' }
+        format.html { redirect_to block_path, notice: 'Block was successfully created.' }
         format.json { render :show, status: :created, location: @users_block }
       else
         format.html { render :new }
@@ -53,9 +57,10 @@ class Users::BlocksController < ApplicationController
   end
 
   def get_blockable_users
-    ids = Block.all.where(id: current_user.id).map do |block|
+    ids = Block.all.where(user_id: current_user.id).map do |block|
             block.blocked_id
           end
+    puts "Ids: #{ids}"
     ids.push(current_user.id)
     User.all.where.not(id: ids)
   end
