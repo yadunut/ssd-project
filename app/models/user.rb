@@ -11,6 +11,9 @@ class User < ApplicationRecord
   has_many :users_that_blocked_me, through: :blocks, source: :user
   has_many :users_i_blocked, through: :blocks, source: 'blocked'
 
+  # Post
+  has_many :posts, dependent: :destroy
+
   validates :name, presence: true
   validates :username, presence: true
   validates :date_of_birth, presence: true

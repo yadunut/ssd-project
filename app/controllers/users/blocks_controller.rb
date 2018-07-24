@@ -14,7 +14,7 @@ class Users::BlocksController < ApplicationController
   def new
     @users_block = Block.new
     @users = get_blockable_users
-    if @users.size == 0
+    if @users.empty?
       flash[:notice] = 'You have blocked all users'
       redirect_to block_path
     end
@@ -57,9 +57,7 @@ class Users::BlocksController < ApplicationController
   end
 
   def get_blockable_users
-    ids = Block.all.where(user_id: current_user.id).map do |block|
-            block.blocked_id
-          end
+    ids = Block.all.where(user_id: current_user.id).map(&:blocked_id)
     puts "Ids: #{ids}"
     ids.push(current_user.id)
     User.all.where.not(id: ids)
