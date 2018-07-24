@@ -7,7 +7,7 @@ class Users::BlocksController < ApplicationController
   # GET /users/blocks
   # GET /users/blocks.json
   def index
-    @users_blocks = Block.all
+    @users_blocks = Block.all.where(user_id: current_user.id)
   end
 
   # GET /users/blocks/new
