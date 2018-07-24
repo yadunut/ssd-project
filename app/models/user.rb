@@ -30,7 +30,9 @@ class User < ApplicationRecord
   end
 
   # Use this instead of User.all so that users that blocked you don't show up
-  def self.get_users(_current_user)
-    User.all
+  def self.get_users(current_user)
+    u = User.all
+    b = current_user.users_i_blocked
+    return u - b
   end
 end
