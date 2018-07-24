@@ -7,20 +7,22 @@ class Users::BlocksController < ApplicationController
   # GET /users/blocks
   # GET /users/blocks.json
   def index
-    @users_blocks = Users::Block.all
+    @users_blocks = Block.all
   end
 
   # GET /users/blocks/new
   def new
-    @users_block = Users::Block.new
-    @users = Users.get_users(current_user)
+    @users_block = Block.new
+    @users = User.all
   end
 
   # POST /users/blocks
   # POST /users/blocks.json
   def create
-    @users_block = Users::Block.new(users_block_params)
-    @users_block.user = current_user
+    @users_block = Block.new(blocked_id: params[:block][:blocked],
+                             user_id: current_user.id)
+    @users = User.all
+    puts "User to block: #{@users_block.inspect}"
 
     respond_to do |format|
       if @users_block.save
@@ -38,7 +40,7 @@ class Users::BlocksController < ApplicationController
   def destroy
     @users_block.destroy
     respond_to do |format|
-      format.html { redirect_to users_blocks_url, notice: 'Block was successfully destroyed.' }
+      format.html { redirect_to block_path, notice: 'Block was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -47,11 +49,8 @@ class Users::BlocksController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_users_block
-    @users_block = Users::Block.find(params[:id])
+    @users_block = Block.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def users_block_params
-    params.fetch(:users_block, {}).permit(:blocked)
-  end
 end

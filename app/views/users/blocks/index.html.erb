@@ -2,19 +2,21 @@
 
 <h1>Users Blocks</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th scope="col">#</th>
+      <th scope="col">Blocked</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @users_blocks.each do |users_block| %>
+    <% @users_blocks.each.with_index(1) do |users_block, index| %>
       <tr>
-        <td><%= link_to 'Show', users_block %></td>
-        <td><%= link_to 'Edit', edit_users_block_path(users_block) %></td>
-        <td><%= link_to 'Destroy', users_block, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= index %></td>
+        <td><%= users_block.blocked.name %>
+        <td><%= link_to 'Destroy', destroy_block_path(users_block.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %></td>
       </tr>
     <% end %>
   </tbody>
@@ -22,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New Users Block', new_users_block_path %>
+<%= link_to 'New Users Block', new_block_path, class: 'btn btn-primary' %>
