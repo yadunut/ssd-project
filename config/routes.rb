@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :posts, only: %i[index create destroy]
   root 'posts#index'
 
-  get 'users/search/:id', to: 'users/users#search', as: :users_search
+  get 'users/search', to: 'users/users#search', as: :users_search
 
   get 'users/profile/:username', to: 'users/users#profile', as: :users_profile
   get 'users/profile', to: 'users/users#slashprofile'
