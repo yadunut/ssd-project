@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  
   # Blocked users
   has_many :blocks
   has_many :users_that_blocked_me, through: :blocks, source: :user
@@ -14,11 +15,10 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :date_of_birth, presence: true
 
-  validates_format_of :username, :with => /\A[a-z]+\z/i, message: 'can only contain letters'
+  validates_format_of :username, with: /\A[a-z]+\z/i, message: 'can only contain letters'
   validate :date_of_birth, :age_allowed
 
   validates :username, uniqueness: true
-
 
   # Validators
   def age_allowed
@@ -27,8 +27,7 @@ class User < ApplicationRecord
   end
 
   # Use this instead of User.all so that users that blocked you don't show up
-  def self.get_users(current_user)
+  def self.get_users(_current_user)
     User.all
   end
-
 end
