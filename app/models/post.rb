@@ -4,5 +4,6 @@ class Post < ApplicationRecord
   belongs_to :user
   validates :body, presence: true
   validates :user, presence: true
-  validates_inclusion_of :visibility, in: [1, 2, 3]
+  validates :visibility, presence: true
+  validates_inclusion_of :visibility, in: [0, 1, 2]
 end

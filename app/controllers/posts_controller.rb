@@ -9,8 +9,14 @@ class PostsController < ApplicationController
   def index
     @users = User.get_users(current_user)
     ids = @users.map(&:id)
-    @posts = Post.all.where(user_id: ids).order(updated_at: :desc)
-    @post = Post.new
+    @posts = Post.all.where(user_id: ids).order(updated_at: :desc).map do |post|
+      if current_user.id == post.user_id
+        post
+      elsif [1, 2].include? post.visibility
+        post
+      end
+    end.compact
+    @post = Post.new if @post.nil?
   end
 
   # POST /posts
@@ -22,10 +28,8 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         format.html { redirect_to posts_url, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.html { redirect_to posts_url }
       end
     end
   end
@@ -51,7 +55,6 @@ class PostsController < ApplicationController
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully deleted.' }
-      format.json { head :no_content }
     end
   end
 
