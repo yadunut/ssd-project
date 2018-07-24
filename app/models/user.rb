@@ -31,8 +31,8 @@ class User < ApplicationRecord
 
   # Use this instead of User.all so that users that blocked you don't show up
   def self.get_users(current_user)
-    u = User.all
-    b = current_user.users_i_blocked
-    return u - b
+    ids = current_user.users_i_blocked.map(&:id)
+    u = User.all.where.not(id: ids)
+    return u
   end
 end
