@@ -13,7 +13,11 @@ class Users::BlocksController < ApplicationController
   # GET /users/blocks/new
   def new
     @users_block = Block.new
-    @users = User.all
+    ids = Block.all.where(id: current_user.id).map do |block|
+            block.blocked_id
+          end
+    ids.push(current_user.id)
+    @users = User.all.where.not(id: ids)
   end
 
   # POST /users/blocks

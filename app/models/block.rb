@@ -6,6 +6,7 @@ class Block < ApplicationRecord
 
   validates :user, presence: true
   validates :blocked, presence: true
+  validates :blocked, uniqueness: {scope: :user, message: 'no duplicate blocks allowed'}
 
   validate :user_is_not_blocked
 

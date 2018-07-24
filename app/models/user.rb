@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   
   # Blocked users
-  has_many :blocks, -> { distinct }
+  has_many :blocks
   has_many :users_that_blocked_me, through: :blocks, source: :user
   has_many :users_i_blocked, through: :blocks, source: 'blocked'
 
