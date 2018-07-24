@@ -13,11 +13,7 @@ class Users::BlocksController < ApplicationController
   # GET /users/blocks/new
   def new
     @users_block = Block.new
-    ids = Block.all.where(id: current_user.id).map do |block|
-            block.blocked_id
-          end
-    ids.push(current_user.id)
-    @users = User.all.where.not(id: ids)
+    @users = get_blockable_users
   end
 
   # POST /users/blocks
@@ -25,7 +21,7 @@ class Users::BlocksController < ApplicationController
   def create
     @users_block = Block.new(blocked_id: params[:block][:blocked],
                              user_id: current_user.id)
-    @users = User.all
+    @users = get_blockable_users
     puts "User to block: #{@users_block.inspect}"
 
     respond_to do |format|
@@ -54,6 +50,14 @@ class Users::BlocksController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_users_block
     @users_block = Block.find(params[:id])
+  end
+
+  def get_blockable_users
+    ids = Block.all.where(id: current_user.id).map do |block|
+            block.blocked_id
+          end
+    ids.push(current_user.id)
+    User.all.where.not(id: ids)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
