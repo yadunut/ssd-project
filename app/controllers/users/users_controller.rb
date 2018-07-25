@@ -60,7 +60,6 @@ class Users::UsersController < ApplicationController
   def update
     bio = user_params[:bio]
 
-
     if bio.blank?
       flash[:alert] = 'Bio cannot be blank'
       redirect_to users_profile_path current_user.username
