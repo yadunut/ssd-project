@@ -14,7 +14,7 @@
       <a class="navbar-brand text-white mb-0 h1" href="<%= root_path %>">BaseFook</a>
       <% if user_signed_in? %>
         <%= link_to('Block User', block_path, class: 'btn btn-danger text-white') %>
-        <%= link_to('Edit Profile', edit_user_registration_path, class: 'btn btn-secondary text-white')%>
+        <%= link_to("Edit #{current_user.name.titleize}", edit_user_registration_path, class: 'btn btn-secondary text-white')%>
       <% end %>
 
       <%= form_with url: users_search_path, method: "get", local: true, class: 'form-inline my-2 my-lg-0' do |f| %>
