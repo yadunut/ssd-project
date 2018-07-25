@@ -33,7 +33,12 @@ class Users::UsersController < ApplicationController
       return
     end
 
-    @user = User.get_users(current_user).find_by(username: username)
+    @user = if user_signed_in?
+              User.get_users(current_user).find_by(username: username)
+            else
+              User.all.find_by(username: username)
+            end
+
     if @user.nil?
       flash[:alert] = "User with #{username} does not exist"
       redirect_to root_path
