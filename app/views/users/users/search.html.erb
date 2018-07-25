@@ -9,6 +9,9 @@
         <h5 class="card-title"><%= user.name %></h5>
         <h6 class="card-subtitle mb-2 text-muted"><%= user.username %></h6>
         <p class="card-text"><%= user.bio %></p>
+        <% if admin_signed_in? %>
+          <%= link_to 'Delete User?', admin_destroy_user_path(id: user.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+        <% end %>
       </div>
     </div>
   </a>

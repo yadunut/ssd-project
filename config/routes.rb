@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   authenticated :admin do
     root 'admins/admins#index'
     get 'admins', to: 'admins/admins#index', as: :admin_root_path
+    delete 'admins/user', to: 'admins/admins#destroy_user', as: :admin_destroy_user
   end
 
   # Only users can do

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model for Users
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -7,7 +8,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   # Blocked users
-  has_many :blocks
+  has_many :blocks, dependent: :destroy
   has_many :users_that_blocked_me, through: :blocks, source: :user
   has_many :users_i_blocked, through: :blocks, source: 'blocked'
 
@@ -18,7 +19,8 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :date_of_birth, presence: true
 
-  validates_format_of :username, with: /\A[a-z]+\z/i, message: 'can only contain letters'
+  validates_format_of :username, with: /\A[a-z]+\z/i,\
+                                 message: 'can only contain letters'
   validate :date_of_birth, :age_allowed
 
   validates :username, uniqueness: true
@@ -31,9 +33,10 @@ class User < ApplicationRecord
 
   # Use this instead of User.all so that users that blocked you don't show up
   def self.get_users(current_user)
-    ids = Block.all.where(user_id: current_user.id).map(&:blocked_id)
-    ids += Block.all.where(blocked_id: current_user.id).map(&:user_id)
-    u = User.all.where.not(id: ids)
-    return u
+    blocks = Block.all
+    c_userid = current_user.id
+    ids = blocks.where(user_id: c_userid).map(&:blocked_id)
+    ids += blocks.where(blocked_id: c_userid).map(&:user_id)
+    User.all.where.not(id: ids)
   end
 end
