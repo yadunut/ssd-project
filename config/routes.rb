@@ -32,11 +32,5 @@ Rails.application.routes.draw do
   get 'users/search', to: 'users/users#search', as: :users_search
   get 'users/profile/:username', to: 'users/users#profile', as: :users_profile
   get 'users/profile', to: 'users/users#slashprofile'
-
-
-
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
-
-
 end
