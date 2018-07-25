@@ -16,7 +16,6 @@
         <%= link_to('Block User', block_path, class: 'btn btn-danger text-white') %>
         <%= link_to("Edit #{current_user.name.titleize}", edit_user_registration_path, class: 'btn btn-secondary text-white')%>
         <%= link_to("My Profile", users_profile_path(current_user.username), class: 'btn btn-secondary text-white')%>
-
       <% end %>
 
       <%= form_with url: users_search_path, method: "get", local: true, class: 'form-inline my-2 my-lg-0' do |f| %>
@@ -25,8 +24,12 @@
       <% end %>
       <% if user_signed_in? %>
         <%= link_to('Logout', destroy_user_session_path, method: :get, class: 'btn btn-danger text-white') %>
+      <% elsif admin_signed_in? %>
       <% else %>
         <%= link_to('Login', new_user_session_path, class: 'btn btn-danger text-white') %>
+      <% end %>
+      <% if admin_signed_in? %>
+        <%= link_to('Logout', destroy_admin_session_path, method: :get, class: 'btn btn-danger text-white') %>
       <% end %>
     </nav>
     <div class="container">
