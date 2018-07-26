@@ -8,13 +8,38 @@
       <%= form.label :bio %>
       <%= form.text_area :bio, class: 'form-control', rows: "3" %>
     </div>
-
     <div class="actions">
     <%= form.submit 'Update Bio', class: 'btn btn-primary' %>
     </div>
-  
-    
   <% end %>
 <% else %>
   <h3><%= @user.bio %></h3>
 <% end %>
+
+<div class="mx-auto">
+  <% @posts.each do |post| %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= post.user.name %></h5>
+          <p class="card-text"><%= post.body %></td></br></br>
+          <% if user_signed_in? && post.user_id == current_user.id %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+          <% end %>
+
+          <% post.comments.each do |comment| %>
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><%= comment.user.name %></h6>
+                <p class="card-text"><%= comment.body %></td></br></br>
+                <% if user_signed_in? && comment.user_id == current_user.id %>
+                  <%= link_to 'Destroy', destroy_comment_path(comment.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+  <br>
+</div>
+

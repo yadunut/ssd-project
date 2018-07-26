@@ -42,9 +42,23 @@ module Users
                 User.all.find_by(username: username)
               end
 
-      return unless @user.nil?
-      flash[:alert] = "User with #{username} does not exist"
-      redirect_to root_path
+      if @user.nil?
+        flash[:alert] = "User with #{username} does not exist"
+        redirect_to root_path
+        return
+      end
+
+      posts = Post.all.where(user_id: @user.id)
+
+      @posts = if user_signed_in?
+                 if current_user.id == @user.id
+                   posts
+                 else
+                   posts.where(visibility: [1, 2])
+                 end
+               else
+                 posts.where(visibility: 2)
+               end
     end
 
     def slashprofile

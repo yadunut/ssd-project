@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   }
   devise_for :admins
 
-
   # Only admins can do
   authenticated :admin do
     root 'admins/admins#index'
