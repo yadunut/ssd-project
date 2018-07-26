@@ -5,12 +5,12 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: :destroy
   before_action :set_comment, only: :destroy_comment
+  before_action :set_users, only: :index
 
   # GET /posts
   def index
-    @users = User.get_users(current_user)
-    ids = @users.map(&:id)
-    @posts = Post.all.where(user_id: ids).order(updated_at: :desc).map do |post|
+    @posts = Post.all.where(user_id: @users.map)\
+                 .order(updated_at: :desc).map do |post|
       if (current_user.id == post.user_id) || ([1, 2].include? post.visibility)
         post
       end
@@ -64,7 +64,10 @@ class PostsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  def set_users
+    @users = User.get_users(current_user)
+  end
+
   def set_post
     @post = Post.find(params[:id])
     return unless @post.nil?
