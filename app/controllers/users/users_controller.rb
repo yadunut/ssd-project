@@ -43,8 +43,8 @@ module Users
               end
 
       return unless @user.nil?
-        flash[:alert] = "User with #{username} does not exist"
-        redirect_to root_path
+      flash[:alert] = "User with #{username} does not exist"
+      redirect_to root_path
     end
 
     def slashprofile

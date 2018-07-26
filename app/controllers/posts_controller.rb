@@ -9,7 +9,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all.where(user_id: @users.map)\
+    @posts = Post.all.where(user_id: @users.map(&:id))\
                  .order(updated_at: :desc).map do |post|
       if (current_user.id == post.user_id) || ([1, 2].include? post.visibility)
         post
