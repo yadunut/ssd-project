@@ -3,6 +3,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
+  prepend_before_action :check_captcha, only: [:create]
+
+
 
   # GET /resource/sign_up
   # def new
@@ -38,7 +41,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
@@ -51,6 +54,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, \
                                       keys: %i[name date_of_birth username])
   end
+
+  private
+
+    def check_captcha
+      unless verify_recaptcha
+        self.resource = resource_class.new sign_up_params
+        resource.validate # Look for any other validation errors besides Recaptcha
+        set_minimum_password_length
+        respond_with resource
+      end
+    end
 
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
