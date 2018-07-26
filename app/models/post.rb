@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+# The post model
 class Post < ApplicationRecord
   belongs_to :user
+  has_many :comments, dependent: :destroy
+
   validates :body, presence: true
   validates :user, presence: true
   validates :visibility, presence: true

@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   }
   devise_for :admins
 
-  resources :posts, only: %i[index create destroy]
 
   # Only admins can do
   authenticated :admin do
@@ -24,6 +23,11 @@ Rails.application.routes.draw do
     get 'users/blocks/new', to: 'users/blocks#new', as: :new_block
     post 'users/blocks', to: 'users/blocks#create', as: :create_block
     delete 'users/blocks/:id', to: 'users/blocks#destroy', as: :destroy_block
+
+    resources :posts, only: %i[index create destroy]
+
+    post 'users/comments', to: 'posts#create_comment', as: :create_comment
+    delete 'users/comments/:id', to: 'posts#destroy_comment', as: :destroy_comment
 
     post 'users/profile', to: 'users/users#update', as: :update_users_profile
   end

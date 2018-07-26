@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_25_042020) do
+ActiveRecord::Schema.define(version: 2018_07_26_100244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(version: 2018_07_25_042020) do
     t.index ["blocked_id"], name: "index_blocks_on_blocked_id"
     t.index ["user_id", "blocked_id"], name: "index_blocks_on_user_id_and_blocked_id", unique: true
     t.index ["user_id"], name: "index_blocks_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "post_id"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -73,5 +83,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_042020) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
 end

@@ -1,0 +1,13 @@
+<%= form_with(url: create_comment_path, local: true, class: 'form-group') do |form|%>
+
+<div class="field">
+  <%= form.label :body, 'comment' %>
+  <%= form.text_field :body %>
+</div>
+
+<%= form.hidden_field :post_id, value: post.id %>
+
+<div class="actions">
+  <%= form.submit 'Submit Comment', class: 'btn btn-primary'%>
+</div>
+<% end %>

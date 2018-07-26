@@ -8,6 +8,19 @@
           <% if post.user_id == current_user.id %>
             <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
           <% end %>
+
+          <% post.comments.each do |comment| %>
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><%= comment.user.name %></h6>
+                <p class="card-text"><%= comment.body %></td></br></br>
+                <% if comment.user_id == current_user.id %>
+                  <%= link_to 'Destroy', destroy_comment_path(comment.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <%= render 'comment_form', post: post %>
         </div>
       </div>
   <% end %>

@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
+# Controller which handles the posts
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[update destroy]
   before_action :authenticate_user!
+  before_action :set_post, only: :destroy
+  before_action :set_comment, only: :destroy_comment
 
   # GET /posts
-  # GET /posts.json
   def index
     @users = User.get_users(current_user)
     ids = @users.map(&:id)
     @posts = Post.all.where(user_id: ids).order(updated_at: :desc).map do |post|
-      if current_user.id == post.user_id
-        post
-      elsif [1, 2].include? post.visibility
+      if (current_user.id == post.user_id) || ([1, 2].include? post.visibility)
         post
       end
     end.compact
@@ -25,37 +24,42 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user_id = current_user.id
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to posts_url, notice: 'Post was successfully created.' }
-      else
-        format.html { redirect_to posts_url }
-      end
-    end
+    flash[:notice] = 'Post was successfully created.' if @post.save
+    redirect_to posts_url
   end
-
-  # Will not be adding ability to update posts for now
-  # # PATCH/PUT /posts/1
-  # # PATCH/PUT /posts/1.json
-  # def update
-  #   respond_to do |format|
-  #     if @post.update(post_params)
-  #       format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-  #       format.json { render :show, status: :ok, location: @post }
-  #     else
-  #       format.html { render :edit }
-  #       format.json { render json: @post.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
 
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-    @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully deleted.' }
+    unless @post.user_id == current_user.id
+      flash[:error] = 'You cannot delete this post'
+      redirect_to posts_url
     end
+
+    @post.destroy
+    flash[:notice] = 'Post was successfully deleted.'
+    redirect_to posts_url
+  end
+
+  # POST /comments
+  def create_comment
+    @comment = Comment.new(comment_params)
+    @comment.user_id = current_user.id
+
+    flash[:notice] = 'Comment was successfully created.' if @comment.save
+    redirect_to posts_url
+  end
+
+  # DELETE /comments/1
+  def destroy_comment
+    unless @comment.user_id == current_user.id
+      flash[:error] = 'You cannot delte this comment'
+      redirect_to posts_url
+    end
+
+    @comment.destroy
+    flash[:notice] = 'Comment was successfully deleted'
+    redirect_to posts_url
   end
 
   private
@@ -63,10 +67,22 @@ class PostsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_post
     @post = Post.find(params[:id])
+    return unless @post.nil?
+    flash[:alert] = 'Post cannot be nil'
+    redirect_to root_path
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white
+  # list through.
   def post_params
-    params.require(:post).permit(:body, :visibility, :user_id)
+    params.require(:post).permit(:body, :visibility)
+  end
+
+  def comment_params
+    params.permit(:body, :post_id)
   end
 end
