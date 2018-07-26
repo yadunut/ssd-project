@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all.order updated_at: :desc
+    @psots = Post.all.order updated_at: :desc
     @comments = Comment.all.order updated_at: :asc
     @users = User.all
   end
