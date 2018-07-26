@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    registrations: 'users/registrations',
+    registrations: 'users/registrations'
   }
   devise_for :admins
 
@@ -10,7 +12,8 @@ Rails.application.routes.draw do
   authenticated :admin do
     root 'admins/admins#index'
     get 'admins', to: 'admins/admins#index', as: :admin_root_path
-    delete 'admins/user', to: 'admins/admins#destroy_user', as: :admin_destroy_user
+    delete 'admins/user', to: 'admins/admins#destroy_user', \
+                          as: :admin_destroy_user
   end
 
   # Only users can do

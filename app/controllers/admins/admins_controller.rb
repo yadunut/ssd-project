@@ -17,15 +17,20 @@ module Admins
         return
       end
 
+      destroy_user_by_id(id)
+      redirect_to root_path
+    end
+
+    private
+
+    def destroy_user_by_id(id)
       user = User.find(id)
       if user.blank?
         flash[:alert] = 'user not found'
         redirect_to root_path
         return
       end
-
       user.destroy
-      redirect_to root_path
     end
   end
 end
