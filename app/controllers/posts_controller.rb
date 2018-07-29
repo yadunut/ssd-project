@@ -69,20 +69,24 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.find(id_params)
     return unless @post.nil?
     flash[:alert] = 'Post cannot be nil'
     redirect_to root_path
   end
 
   def set_comment
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find(id_params)
   end
 
   # Never trust parameters from the scary internet, only allow the white
   # list through.
   def post_params
     params.require(:post).permit(:body, :visibility)
+  end
+
+  def id_params
+    params.permit(:id)
   end
 
   def comment_params

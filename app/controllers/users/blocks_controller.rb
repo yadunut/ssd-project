@@ -53,7 +53,11 @@ class Users::BlocksController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_users_block
-    @users_block = Block.find(params[:id])
+    @users_block = Block.find(id_params)
+  end
+
+  def id_params
+    params.permit(:id)
   end
 
   def get_blockable_users
