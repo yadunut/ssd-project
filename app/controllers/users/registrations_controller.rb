@@ -18,13 +18,9 @@ module Users
       if verify_recaptcha
         super
       else
-        flash.now[:alert] = 'Recaptcha verification failed'
-        flash.delete :recaptcha_error
         build_resource(sign_up_params)
         resource.validate
-        puts "sign_up_params: #{sign_up_params}"
-        puts "resource: #{resource.inspect}"
-        puts "resource errors: #{resource.errors.messages}"
+        resource.errors.add(:recaptcha, 'Validation failed')
         clean_up_passwords(resource)
         set_minimum_password_length
         render :new
@@ -74,8 +70,6 @@ module Users
         self.resource = resource_class.new sign_up_params
         resource.validate # Look for any other validation errors
         set_minimum_password_length
-        puts "resource: #{resource.inspect}"
-        puts "Path: #{new_user_registration_path}"
         respond_with resource, location: new_user_registration_path(resource)
       end
     end

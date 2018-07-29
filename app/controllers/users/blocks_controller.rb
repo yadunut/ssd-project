@@ -26,7 +26,6 @@ class Users::BlocksController < ApplicationController
     @users_block = Block.new(blocked_id: params[:block][:blocked],
                              user_id: current_user.id)
     @users = get_blockable_users
-    puts "User to block: #{@users_block.inspect}"
 
     respond_to do |format|
       if @users_block.save
@@ -62,7 +61,6 @@ class Users::BlocksController < ApplicationController
 
   def get_blockable_users
     ids = Block.all.where(user_id: current_user.id).map(&:blocked_id)
-    puts "Ids: #{ids}"
     ids.push(current_user.id)
     User.all.where.not(id: ids)
   end
