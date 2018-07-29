@@ -62,7 +62,7 @@ class Users::BlocksController < ApplicationController
   def get_blockable_users
     ids = Block.all.where(user_id: current_user.id).map(&:blocked_id)
     ids.push(current_user.id)
-    User.all.where.not(id: ids)
+    User.get_users(nil).where.not(id: ids)
   end
 
 end

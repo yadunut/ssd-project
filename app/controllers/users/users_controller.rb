@@ -15,7 +15,7 @@ module Users
       users = if user_signed_in?
                 User.get_users(current_user)
               else
-                User.all
+                User.get_users(nil)
               end
       @users = users
                .where('lower(name) LIKE ?', "%#{id.downcase}%")
@@ -39,7 +39,7 @@ module Users
       @user = if user_signed_in?
                 User.get_users(current_user).find_by(username: username)
               else
-                User.all.find_by(username: username)
+                User.get_users(nil).find_by(username: username)
               end
 
       if @user.nil?

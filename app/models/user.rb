@@ -38,6 +38,7 @@ class User < ApplicationRecord
 
   # Use this instead of User.all so that users that blocked you don't show up
   def self.get_users(current_user)
+    return User.all.where.not(confirmed_at: nil) if current_user.nil?
     blocks = Block.all
     c_userid = current_user.id
     ids = blocks.where(user_id: c_userid).map(&:blocked_id)
