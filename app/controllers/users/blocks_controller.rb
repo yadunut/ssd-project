@@ -52,7 +52,7 @@ class Users::BlocksController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_users_block
-    @users_block = Block.find(id_params)
+    @users_block = Block.find_by(id_params)
   end
 
   def id_params
