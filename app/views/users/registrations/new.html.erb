@@ -38,8 +38,8 @@
 
 <div class="field">
   <p>Basefook has the right to use / disclose your information whenever it is deemed necessary and useful for the whole website</p>
-  <%= f.label :terms_of_service, "By ticking this checkbox you agree to the above"%>
   <%= f.check_box :terms_of_service %>
+  <%= f.label :terms_of_service, "By ticking this checkbox you agree to the above" %>
 </div>
   
   <% if flash[:recaptcha_error] %>
