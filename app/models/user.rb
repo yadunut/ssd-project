@@ -27,6 +27,8 @@ class User < ApplicationRecord
   validate :date_of_birth, :age_allowed
 
   validates :username, uniqueness: true
+  validates :terms_of_service, acceptance: { message: 'must be abided' }
+
 
   # Validators
   def age_allowed

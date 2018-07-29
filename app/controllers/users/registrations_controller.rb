@@ -6,7 +6,7 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     before_action :configure_sign_up_params, only: [:create]
     before_action :configure_account_update_params, only: [:update]
-    prepend_before_action :check_captcha, only: [:create]
+    # prepend_before_action :check_captcha, only: [:create]
 
     # GET /resource/sign_up
     # def new
@@ -14,9 +14,17 @@ module Users
     # end
 
     # POST /resource
-    # def create
-    #   super
-    # end
+    def create
+      if verify_recaptcha
+        super
+      else
+        build_resource(sign_up_params)
+        clean_up_passwords(resource)
+        flash.now[:alert] = "Recaptcha verification failed"
+        flash.delete :recaptcha_error
+        redirect_to resource
+      end
+    end
 
     # GET /resource/edit
     # def edit
@@ -47,7 +55,7 @@ module Users
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up, \
-                                        keys: %i[name date_of_birth username])
+                                        keys: %i[name date_of_birth username terms_of_service])
     end
 
     # If you have extra params to permit, append them to the sanitizer.
@@ -57,14 +65,15 @@ module Users
     end
 
     def check_captcha
-      # devise_parameter_sanitizer.permit(:sign_up, \
-      #                                   keys: %i[name date_of_birth username])
       unless verify_recaptcha
         # configure_sign_up_params
+
         self.resource = resource_class.new sign_up_params
         resource.validate # Look for any other validation errors
         set_minimum_password_length
-        respond_with resource
+        puts "resource: #{resource.inspect}"
+        puts "Path: #{new_user_registration_path}"
+        respond_with resource, location: new_user_registration_path(resource)
       end
     end
 

@@ -35,7 +35,16 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
   </div>
+
+<div class="field">
+  <p>Basefook has the right to use / disclose your information whenever it is deemed necessary and useful for the whole website</p>
+  <%= f.label :terms_of_service, "By ticking this checkbox you agree to the above"%>
+  <%= f.check_box :terms_of_service %>
+</div>
   
+  <% if flash[:recaptcha_error] %>
+    <p class="alert alert-danger"><%= flash[:recaptcha_error] %></p>
+  <% end %>
   <%= recaptcha_tags %>
 
   <div class="actions">
