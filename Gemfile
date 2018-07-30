@@ -34,6 +34,7 @@ gem 'recaptcha'
 gem 'devise'
 gem 'bootstrap'
 gem 'jquery-rails'
+gem "audited", "~> 4.7"
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

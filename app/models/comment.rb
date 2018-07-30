@@ -1,4 +1,5 @@
 class Comment < ApplicationRecord
+  audited
   belongs_to :user
   belongs_to :post
 
