@@ -11,7 +11,7 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
-      <a class="navbar-brand text-white mb-0 h1" href="<%= root_path %>">BaseFook</a>
+      <a class="navbar-brand text-white mb-0 h1" href="<%= root_path %>">🅱aseFook</a>
       <% if user_signed_in? %>
         <%= link_to('Block User', block_path, class: 'btn btn-danger text-white') %>
         <%= link_to("Edit #{current_user.name.titleize}", edit_user_registration_path, class: 'btn btn-secondary text-white')%>
